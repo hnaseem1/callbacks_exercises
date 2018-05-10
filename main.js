@@ -287,7 +287,14 @@ console.log( 'The unique customers are:', uniqueCustomers );
   - There may be more than 1 'sale' that includes 5 or more items.
   - Individual transactions do not have either `name` or `numItems` properties, we'll have to add them to the output.
 */
-var bigSpenders;
+
+function itemsMoreThanFive(transaction) {
+  if (transaction.type === 'sale' && transaction.items.length >= 5) {
+    return transaction
+  }
+}
+
+var bigSpenders = transactions.filter(itemsMoreThanFive).length;
 
 console.log( 'The "big spenders" are:', bigSpenders );
 
@@ -301,7 +308,18 @@ console.log( 'The "big spenders" are:', bigSpenders );
   HINT(S):
   - Transactions don't have 'prices', but their 'items' do!
 */
-var sumSales;
+var sumSales = 0;
+
+transactions.forEach(function(transaction) {
+  if (transaction.type === 'sale') {
+    for (var i = 0; i < transaction.items.length; i++) {
+        sumSales += transaction.items[i].price
+      }
+    }
+  }
+)
+
+
 
 console.log( 'The sum of all sales is:', sumSales );
 
@@ -317,7 +335,15 @@ console.log( 'The sum of all sales is:', sumSales );
   - Make sure to include 'price' information from *all* purchases.
 */
 
-var sumPurchases;
+var sumPurchases = 0;
+transactions.forEach(function(transaction) {
+  if (transaction.type === 'purchase') {
+    for (var i = 0; i < transaction.items.length; i++) {
+        sumPurchases -= transaction.items[i].price
+      }
+    }
+  }
+)
 
 console.log( 'The sum of all purhcases is:', sumPurchases );
 
@@ -335,7 +361,8 @@ console.log( 'The sum of all purhcases is:', sumPurchases );
   HINT(S):
   - Unlike 'QUESTION 08' and 'QUESTION 09', here we're interested in both 'sale' and 'purchase' transactions.
 */
-var netProfit;
+var netProfit = sumSales - sumPurchases
+
 
 console.log( 'The net profit is:', netProfit );
 
@@ -349,7 +376,17 @@ console.log( 'The net profit is:', netProfit );
   HINTS:
   - The result of this calculation should be a number (not an array, object, or other data type).
 */
-var mostItems;
+
+numOfItemsSold = []
+transactions.forEach(function(transaction) {
+  if (transaction.type === 'sale') {
+    numOfItemsSold.push(transaction.items.length)
+  }
+})
+
+var mostItems = numOfItemsSold.reduce(function(a, b) {
+  return Math.max(a, b)
+});
 
 console.log( 'The most items sold in a single transaction is:', mostItems );
 
@@ -360,6 +397,16 @@ console.log( 'The most items sold in a single transaction is:', mostItems );
 /*
   Calculate the sum of the 'purchase' with the fewest items.
 */
-var sumOfSmallestPurchase;
+
+numOfItemsPurchase = []
+transactions.forEach(function(transaction) {
+  if (transaction.type === 'purchase') {
+    numOfItemsPurchase.push(transaction.items.length)
+  }
+})
+
+var sumOfSmallestPurchase = numOfItemsPurchase.reduce(function(a, b) {
+  return Math.min(a, b)
+});;
 
 console.log( 'The sum of the smallest purchase is:', sumOfSmallestPurchase );
